@@ -1,0 +1,119 @@
+﻿@model IEnumerable<bot_o_mat_swetac14.Models.RoboType>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <h2>Rent-A-BOT</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    
+</head>
+<body>
+    <form id="SelectRoboForm">
+        <table id="tblRoboType" class="table table-responsive table-hover">
+            <thead>
+                <tr>
+                    <th>Select a robot to rent </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var robos in Model)
+                {
+                    <tr>
+                        <td>
+                            <input type="checkbox" id="chk_@robos.TypeOfRobo" name="chkRobo" value="@robos.TypeOfRobo" />
+                            @Html.ActionLink(robos.TypeOfRobo, null, null, new { id = robos.ID }, null)
+                            @*@Html.CheckBox("chk"+robos.TypeOfRobo, false)*@
+                            @*@Html.CheckBox(robos.TypeOfRobo,false, new { onchange = "AddRemoveTextbox(this)" })*@
+
+                            <div class="tt-container">
+                                <input type="text" id="txt_@robos.TypeOfRobo" placeholder="Name of the Robot" name="txtRoboName" style="display:none" />
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <button type="submit" id="btnAssignTask" class="btn btn-primary">Next</button>
+        <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "SelectRobot")'">Cancel</button>
+</form>
+
+        @section scripts
+{
+            <script type="text/javascript">
+
+                $(document).ready(function () {
+
+                    $(":checkbox").click(function () {
+                        if ($('#tblRoboType :input[type="checkbox"]:checked').length <= 3) {
+                            var textboxID = "txt_" + $(this).val();
+                            if (this.checked == false) {
+                                $(`#${textboxID}`).removeAttr("style");
+                                $(`#${textboxID}`).val("");
+                                $(`#${textboxID}`).hide();
+
+                            }
+                            else {
+                                $(`#${textboxID}`).removeAttr("style");
+                                $(`#${textboxID}`).val("");
+                                $(`#${textboxID}`).show();
+                            }
+                        }
+                        else {
+                            alert("You can select maximum of 3 robots.");
+                            $(this).prop('checked', false);
+                        }
+                    });
+
+                    //  $('#btnAssignTask').click(function () {
+                    $("#SelectRoboForm").on('submit', function (e) {
+                        e.preventDefault();
+
+                        var roboValues, nameValues, result;
+                        if ($("#SelectRoboForm input:checkbox:checked").length <= 0) {
+                            alert("Please select a robot");
+                                return false;
+                        }
+                        else {
+                            roboValues = $('input:checkbox:checked').map((i, el) => el.value).get();
+                            //  console.log(roboValues);
+                            // var textboxValues = $('input[type="text"]').filter(function () { return $(this).val(); });
+                            //  var textboxValues = $('input:text[value!=""]').map((i, el) => el.value).get();
+                            nameValues = $('input:text[value!=""]').map(function () { return this.value ? this.value : null; }).get();
+                            // console.log(nameValues);
+                            if (roboValues.length != nameValues.length) {
+                                alert("Please enter the Name of all the selected Robots.")
+                                return false;
+                            }
+                            else {
+                                result = nameValues.reduce(function (result, field, index) {
+                                    result[roboValues[index]] = field;
+                                    return result;
+                                }, {});                               
+                                
+                                $.ajax({
+                                    url: "/SelectRobot/SelectTask",
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    data: { roboVal: roboValues, nameVal: nameValues },
+                                    traditional: true
+                                }).done(function (response) {
+                                    console.log(response);
+                                    window.location.href = "@Url.Action("SelectTask", "SelectRobot")";
+                                }).fail(function (response) {
+                                    console.log(response);
+                                });
+                            }
+                        }
+                    });
+                });
+
+            </script>
+        }
+</body>
+</html>
+
+
+

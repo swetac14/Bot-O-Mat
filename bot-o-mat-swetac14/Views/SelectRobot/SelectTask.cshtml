@@ -1,0 +1,96 @@
+﻿@*@model IEnumerable<bot_o_mat_swetac14.ViewModel.SelectRobotFormViewModel>*@
+@{
+    ViewBag.Title = "SelectTask";
+    // Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<h2>AssignTask</h2>
+
+
+<table class="table table-condensed table-hover">
+
+    <tbody>
+        @foreach (var robo in (IEnumerable<bot_o_mat_swetac14.ViewModel.SelectRobotFormViewModel>)TempData["SelectRobo"])
+        {
+            <tr>
+                <td><b>@robo.BotType</b> (@robo.BotName)</td>
+                <td>
+                    <div>
+                        <select id="ddl_@robo.BotName" multiple="multiple" name="@robo.BotName" required>
+
+                            @foreach (var item in robo.RoboTasks)
+                            {
+
+                                <option value="@item.ID">@item.Description - ETA @item.EstimatedTimeTaken ms</option>
+
+                            }
+
+                        </select>
+                        <input type="button" class="btn btn-primary" id="btn_@robo.BotName" name="@robo.BotName" value="Click to Get Selected Task(s)" />
+                    </div>
+                </td>
+                <td>
+                    <div id="dvSelected_@robo.BotName"  style="display:none">
+                    </div>
+                    <ol id="ol_@robo.BotName">
+                    </ol>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<button type="submit" class="btn btn-primary">Assign Tasks</button>
+<button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "SelectRobot")'">Cancel</button>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(":button").click(function () {
+                var commonID = $(this).attr('name');
+                    var ddlID = "ddl_" + commonID;
+                    var dvID = "dvSelected_" + commonID;
+                    var olID = "ol_" + commonID;
+                if ($(`#${ddlID} option:selected`).length >=1) {                   
+
+                    $(`#${dvID}`).removeAttr("style");
+                    $(`#${dvID}`).show();
+                    $(`#${olID}`).empty();
+
+                    var tasks = [];
+                    $.each($(`#${ddlID}  option:selected`), function () {
+                        //tasks.push($(this).text());
+                        $(`#${olID}`).append(`<li>${$(this).text()}</li>`);
+                    });
+                    //alert("You have selected the following tasks - " + tasks.join(", "));
+                    $(`#${dvID}`).text("You have selected the following tasks :- ");
+
+                    var all_rows = [];
+
+    $(`#${ddlID}  option:selected`).each(function() {
+            var this_row={};
+            //$(this).find("input").each(function(){
+
+            keyvalue = $(this).text();
+            namevalue = commonID;
+            this_row[keyvalue] = namevalue;
+       // });
+        all_rows.push(this_row);
+
+    });
+    console.log(all_rows);
+                }
+            });
+        });
+
+    </script>
+}
+
+
+
+
+
+

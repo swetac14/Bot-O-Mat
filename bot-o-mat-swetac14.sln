@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bot-o-mat-swetac14", "bot-o-mat-swetac14\bot-o-mat-swetac14.csproj", "{FE616E05-54D0-4613-B6AE-ACCB4EC70432}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FE616E05-54D0-4613-B6AE-ACCB4EC70432}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE616E05-54D0-4613-B6AE-ACCB4EC70432}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE616E05-54D0-4613-B6AE-ACCB4EC70432}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE616E05-54D0-4613-B6AE-ACCB4EC70432}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {872277B6-2AB6-4C10-8DA1-5D4118B6C108}
+	EndGlobalSection
+EndGlobal
